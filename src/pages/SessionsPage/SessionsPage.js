@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 export default function SessionsPage() {
 
     const [sessoes, setSessoes] = useState([]);
+    const [info, setInfo] = useState([]);
     const { idFilme } = useParams();
     
 
@@ -15,7 +16,8 @@ export default function SessionsPage() {
 
         const promise = axios.get(url);
         promise.then((res) => {
-            setSessoes(res.data);
+            setSessoes(res.data.days);
+            setInfo(res.data);
             console.log(res.data);
         })
         promise.catch((err) => {
@@ -33,33 +35,34 @@ export default function SessionsPage() {
                  
                 <SessionContainer> {sessoes.map((s) => (
                     <>
-                        <p id={s.id}>{s.weekday} - {s.date}</p>
+                        <p data-test="movie-day" id={s.id}>{s.weekday} - {s.date}</p>
 
-                        <ButtonsContainer>
-                            <button id={s.id}>{s.name}</button>
-                            <button id={s.id}>{s.name}</button>
-
+                        <ButtonsContainer> {s.showtimes.map((sala) =>
+                        
+                        <Link to={`/assentos/${sala.id}`}> <button data-test="showtime" id={sala.id}>  {sala.name}</button> </Link>  
+                        
+                        )}
+                            
                         </ButtonsContainer>
-                    
-                    
                         </> 
                          ))}
+
                 </SessionContainer>
                 
-           
             </div>
 
 
             <FooterContainer> 
+                
             <div>
-            <img id={sessoes.id} src={sessoes.posterURL} alt="poster" />
+            <img id={info.id} src={info.posterURL} alt="poster" />
         </div>
         <div>
-            <p>{sessoes.title}</p>
+            <p>{info.title}</p>
 
         </div>
         
-
+        
             </FooterContainer>
             
 
@@ -91,10 +94,11 @@ const SessionContainer = styled.div`
     padding: 0 20px;
 `
 const ButtonsContainer = styled.div`
+background-color: purple;
     display: flex;
-    background-color: blue;
     flex-direction: row;
     margin: 20px 0;
+
     button {
         margin-right: 20px;
     }

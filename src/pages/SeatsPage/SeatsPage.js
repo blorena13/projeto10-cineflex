@@ -1,31 +1,57 @@
 import styled from "styled-components";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export default function SeatsPage() {
+
+    const [assentos, setAssentos] = useState([]);
+    const [filme, setFilme] = useState([]);
+    const [horario, setHorario] = useState([]);
+    const [dia, setDia] = useState([]);
+    const { idSessao } = useParams();
+
+    useEffect(() => {
+
+    const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`
+
+    const promise = axios.get(url);
+    promise.then((res) => {
+        setAssentos(res.data.seats);
+        setFilme(res.data.movie);
+        setHorario(res.data);
+        setDia(res.data.day);
+    } )
+    promise.catch((err) => {
+        console.log(err.response.data);
+    })
+}, []);
+
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
-            <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+            <SeatsContainer> {assentos.map((a) => (
+                <>
+                   <SeatItem id={a.id} busca={a.isAvailable} >{a.name}</SeatItem>
+                   </>
+            ))}
+               
+                
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle busca={true} id={assentos.id} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle busca={''} id={assentos.id}/>
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle busca={false} id={assentos.id}/>
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -42,11 +68,11 @@ export default function SeatsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={filme.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{filme.title}</p>
+                    <p>{dia.weekday} - {horario.name}</p>
                 </div>
             </FooterContainer>
 
@@ -97,8 +123,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${({busca}) => busca === true ? '#0E7D71' : busca === false ? '#F7C52B' : '#7B8B99'};          // Essa cor deve mudar
+    background-color: ${({busca}) => busca === true ? '#1AAE9E' : busca === false ? '#FBE192' : 'lightblue' };   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -114,8 +140,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${({busca}) => busca === true ? '#0E7D71' : busca === false ? '#F7C52B' : '#7B8B99'} ;         // Essa cor deve mudar
+    background-color: ${({busca}) => busca === true ? '#1AAE9E' : busca === false ? '#FBE192' : 'lightblue' };
     height: 25px;
     width: 25px;
     border-radius: 25px;
