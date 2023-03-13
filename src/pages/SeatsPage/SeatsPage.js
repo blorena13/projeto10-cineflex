@@ -2,14 +2,29 @@ import styled from "styled-components";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import Seats from "./Seats";
 
-export default function SeatsPage() {
+export default function SeatsPage({selected, setSelected}) {
 
     const [assentos, setAssentos] = useState([]);
     const [filme, setFilme] = useState([]);
     const [horario, setHorario] = useState([]);
     const [dia, setDia] = useState([]);
     const { idSessao } = useParams();
+
+    
+    
+        const handleSelectSeat = (id) => { 
+         if (selected.includes(id)){
+             setSelected(selected.filter((seatId) => seatId !== id))
+         } else {
+             setSelected([...selected, id]);
+         }
+     }
+ 
+ 
+
+    console.log()
 
     useEffect(() => {
 
@@ -27,15 +42,19 @@ export default function SeatsPage() {
     })
 }, []);
 
-
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
-            <SeatsContainer> {assentos.map((a) => (
-                <>
-                   <SeatItem id={a.id} busca={a.isAvailable} >{a.name}</SeatItem>
-                   </>
+            <SeatsContainer> 
+                {assentos.map((a) => ( 
+            <Seats  
+            key={a.id}
+            id={a.id} 
+            busca={a.isAvailable}  
+            name={a.name} 
+            onClick={() => handleSelectSeat(a.id)}
+             />   
             ))}
                
                 
@@ -43,15 +62,15 @@ export default function SeatsPage() {
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle busca={true} id={assentos.id} />
+                    <CaptionCircle busca={true}  />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle busca={''} id={assentos.id}/>
+                    <CaptionCircle busca={''} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle busca={false} id={assentos.id}/>
+                    <CaptionCircle busca={false} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -123,8 +142,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid ${({busca}) => busca === true ? '#0E7D71' : busca === false ? '#F7C52B' : '#7B8B99'};          // Essa cor deve mudar
-    background-color: ${({busca}) => busca === true ? '#1AAE9E' : busca === false ? '#FBE192' : 'lightblue' };   // Essa cor deve mudar
+    border: 1px solid ${({busca}) => busca === true ? '#0E7D71' : busca === false ? '#F7C52B' : '#808F9D'};          // Essa cor deve mudar
+    background-color: ${({busca}) => busca === true ? '#1AAE9E' : busca === false ? '#FBE192' : '#C3CFD9' } ;   // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -139,19 +158,7 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const SeatItem = styled.div`
-    border: 1px solid ${({busca}) => busca === true ? '#0E7D71' : busca === false ? '#F7C52B' : '#7B8B99'} ;         // Essa cor deve mudar
-    background-color: ${({busca}) => busca === true ? '#1AAE9E' : busca === false ? '#FBE192' : 'lightblue' };
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;

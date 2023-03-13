@@ -8,6 +8,9 @@ import { useState } from "react";
 
 export default function App() {
 
+    const [selected, setSelected] = ([]);
+
+    
     
     return (
         <>
@@ -16,9 +19,9 @@ export default function App() {
 
             <Routes>
            <Route path="/" element= { <HomePage  />} />  
-           <Route path="/sessoes/:idFilme" element={<SessionsPage />} /> 
-           <Route path="/assentos/:idSessao" element={ <SeatsPage /> } /> 
-            <Route path="/sucesso" element={<SuccessPage /> }/>
+           <Route path="/sessoes/:idFilme" element={<SessionsPage  />} /> 
+           <Route path="/assentos/:idSessao" element={ <SeatsPage selected={selected} setSelected={setSelected}  /> } /> 
+            <Route path="/sucesso" element={<SuccessPage selected={selected} setSelected={setSelected} /> }/>
             </Routes>
 
             </BrowserRouter>
