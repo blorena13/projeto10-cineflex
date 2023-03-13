@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export default function SuccessPage() {
+export default function SuccessPage({horario, setHorario, filme, setFilme, dia, setDia}) {
 
     return (
         <PageContainer>
@@ -8,8 +8,8 @@ export default function SuccessPage() {
 
             <TextContainer>
                 <strong><p>Filme e sessão</p></strong>
-                <p>Tudo em todo lugar ao mesmo tempo</p>
-                <p>03/03/2023 - 14:00</p>
+                <p>{filme.title}</p>
+                <p> - {horario.name}</p>
             </TextContainer>
 
             <TextContainer>

@@ -8,9 +8,14 @@ import { useState } from "react";
 
 export default function App() {
 
-    const [selected, setSelected] = ([]);
+    const [selected, setSelected] = useState([]);
+    const [nomeFinal, setNomeFinal] = useState("");
+    const [cpf, setCpf] = useState("");
+    const [dia, setDia] = useState([]);
+    const [horario, setHorario] = useState([]);
+    const [filme, setFilme] = useState([]);
 
-    
+    const assentosIds = [];
     
     return (
         <>
@@ -20,8 +25,35 @@ export default function App() {
             <Routes>
            <Route path="/" element= { <HomePage  />} />  
            <Route path="/sessoes/:idFilme" element={<SessionsPage  />} /> 
-           <Route path="/assentos/:idSessao" element={ <SeatsPage selected={selected} setSelected={setSelected}  /> } /> 
-            <Route path="/sucesso" element={<SuccessPage selected={selected} setSelected={setSelected} /> }/>
+           <Route path="/assentos/:idSessao" 
+           element={ 
+           <SeatsPage 
+           nomeFinal={nomeFinal} 
+           setNomeFinal={setNomeFinal}  
+           selected={selected} 
+           setSelected={setSelected}
+           cpf={cpf}
+           setCpft={setCpf}
+           dia={dia}
+           setDia={setDia}
+           horario={horario}
+           setHorario={setHorario}
+           filme={filme}
+           setFilme={setFilme}
+           assentosIds={assentosIds}
+             /> } /> 
+
+            <Route path="/sucesso" 
+            element={
+            <SuccessPage 
+            selected={selected} 
+            setSelected={setSelected}
+            assentosIds={assentosIds}
+            filme={filme}
+           setFilme={setFilme}
+           horario={horario}
+           setHorario={setHorario}
+             /> }/>
             </Routes>
 
             </BrowserRouter>

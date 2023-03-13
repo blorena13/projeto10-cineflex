@@ -9,7 +9,7 @@ export default function SessionsPage() {
     const [sessoes, setSessoes] = useState([]);
     const [info, setInfo] = useState([]);
     const { idFilme } = useParams();
-    
+
 
     useEffect(() => {
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${idFilme}/showtimes`
@@ -29,42 +29,44 @@ export default function SessionsPage() {
         <PageContainer>
             Selecione o horário
 
-          
-           
-            <div>  
-                 
-                <SessionContainer> {sessoes.map((s) => (
-                    <>
-                        <p data-test="movie-day" id={s.id}>{s.weekday} - {s.date}</p>
 
-                        <ButtonsContainer> {s.showtimes.map((sala) =>
-                        
-                        <Link to={`/assentos/${sala.id}`}> <button data-test="showtime" id={sala.id}>  {sala.name}</button> </Link>  
-                        
-                        )}
-                            
-                        </ButtonsContainer>
-                        </> 
-                         ))}
 
-                </SessionContainer>
-                
+            <div>
+                {sessoes.map((s) => (
+                    <SessionContainer data-test="movie-day">
+                        <>
+                            <p id={s.id}>{s.weekday} - {s.date}</p>
+
+                            <ButtonsContainer> {s.showtimes.map((sala) =>
+
+                                <Link to={`/assentos/${sala.id}`} key={sala.id}>
+                                    <button data-test="showtime" id={sala.id}>  {sala.name}</button>
+                                </Link>
+
+                            )}
+
+                            </ButtonsContainer>
+                        </>
+
+
+                    </SessionContainer>
+                ))}
             </div>
 
 
-            <FooterContainer> 
-                
-            <div>
-            <img id={info.id} src={info.posterURL} alt="poster" />
-        </div>
-        <div>
-            <p>{info.title}</p>
+            <FooterContainer>
 
-        </div>
-        
-        
+                <div data-test="footer">
+                    <img id={info.id} src={info.posterURL} alt="poster" />
+                </div>
+                <div>
+                    <p>{info.title}</p>
+
+                </div>
+
+
             </FooterContainer>
-            
+
 
         </PageContainer>
     )
@@ -94,11 +96,9 @@ const SessionContainer = styled.div`
     padding: 0 20px;
 `
 const ButtonsContainer = styled.div`
-background-color: purple;
     display: flex;
     flex-direction: row;
     margin: 20px 0;
-
     button {
         margin-right: 20px;
     }
