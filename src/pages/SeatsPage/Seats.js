@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import { useState } from "react";
 
-export default function Seats({id, busca , name , onClick, selecionado}){
+export default function Seats({id, busca , name , onClick, selecionado, ingresso}){
 
     const [reserva, setReserva] = useState(false);
-    
     
 
     return (
         <>
-        <SeatItem 
+        <SeatItem data-test="seat"
+        name={name}
         id={id} 
         busca={busca} 
         reserva={reserva}
@@ -17,6 +17,7 @@ export default function Seats({id, busca , name , onClick, selecionado}){
             setReserva(!reserva);
             onClick(id);
             selecionado(id)
+            ingresso(name)
         }
             
         } 

@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import Seats from "./Seats";
 import { useNavigate } from "react-router-dom";
 
-export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFinal, cpf, setCpft, dia, setDia, horario, setHorario, filme, setFilme, assentosIds  }) {
+export default function SeatsPage({ ingresso, selected, setSelected, nomeFinal, setNomeFinal, cpf, setCpft, dia, setDia, horario, setHorario, filme, setFilme, assentosIds, assentos, setAssentos, compra, setCompra }) {
 
-    const [assentos, setAssentos] = useState([]);
+
     const { idSessao } = useParams();
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFin
         }
     }
 
-    console.log(assentosIds);
+
 
     useEffect(() => {
 
@@ -43,15 +43,33 @@ export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFin
         e.preventDefault();
 
         const urlPost = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many";
-        const body = { name: nomeFinal , cpf: cpf , ids: assentosIds }
+        const body = { ids: assentosIds, name: nomeFinal, cpf: cpf }
+        console.log(body)
 
         const promisePost = axios.post(urlPost, body)
         promisePost.then(res => navigate("/sucesso"));
         promisePost.catch(err => console.log(err.response.data));
-
     }
 
-    
+
+    function finalizar(NumSeats) {
+        const verificar = NumSeats - 1;
+
+        if (assentos[verificar].isAvailable) {
+            if (!selected.includes(NumSeats)) {
+                setSelected([...selected, NumSeats]);
+
+            } else {
+                const novoAssento = [...selected];
+                let posicao = novoAssento.indexOf(NumSeats);
+                novoAssento.splice(posicao, 1);
+                setSelected(novoAssento);
+            }
+        } else {
+            alert('Esse assento não está disponível');
+        }
+    }
+
     return (
         <PageContainer>
             Selecione o(s) assento(s)
@@ -63,8 +81,12 @@ export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFin
                         id={a.id}
                         busca={a.isAvailable}
                         name={a.name}
-                        onClick={() => handleSelectSeat(a.id)}
+                        onClick={() => {
+                            handleSelectSeat(a.id, a.name)
+                            finalizar(a.name);
+                        }}
                         selecionado={selected.includes(a.id)}
+
                     />
                 ))}
 
@@ -90,6 +112,7 @@ export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFin
                 <FormContainer>
                     Nome do Comprador:
                     <input
+                        data-test="client-name"
                         type="text"
                         required
                         value={nomeFinal}
@@ -98,17 +121,18 @@ export default function SeatsPage({ selected, setSelected, nomeFinal, setNomeFin
 
                     CPF do Comprador:
                     <input
+                        data-test="client-cpf"
                         type="number"
                         required
                         value={cpf}
                         onChange={e => setCpft(e.target.value)}
                         placeholder="Digite seu CPF..." />
 
-                    <button onClick={pedidoFinal}>Reservar Assento(s)</button>
+                    <button data-test="book-seat-btn" onClick={pedidoFinal}>Reservar Assento(s)</button>
                 </FormContainer>
             </form>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={filme.posterURL} alt="poster" />
                 </div>

@@ -1,31 +1,43 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export default function SuccessPage({horario, setHorario, filme, setFilme, dia, setDia}) {
+export default function SuccessPage({ horario, filme, sessoes, nomeFinal, cpf, assentos, ingresso }) {
+
+    console.log(sessoes)
 
     return (
         <PageContainer>
             <h1>Pedido feito <br /> com sucesso!</h1>
 
             <TextContainer>
-                <strong><p>Filme e sessão</p></strong>
-                <p>{filme.title}</p>
-                <p> - {horario.name}</p>
+                <div data-test="movie-info">
+                    <strong><p>Filme e sessão</p></strong>
+                    <p>{filme.title}</p>
+                    <p>{sessoes.date} - {horario.name}</p>
+                </div>
             </TextContainer>
 
             <TextContainer>
-                <strong><p>Ingressos</p></strong>
-                <p>Assento 01</p>
-                <p>Assento 02</p>
-                <p>Assento 03</p>
+                <div data-test="seats-info">
+                    <strong><p>Ingressos</p></strong>
+                   
+                        <p>Assento  </p>
+                   
+
+                </div>
+
             </TextContainer>
 
             <TextContainer>
-                <strong><p>Comprador</p></strong>
-                <p>Nome: Letícia Chijo</p>
-                <p>CPF: 123.456.789-10</p>
+                <div data-test="client-info">
+                    <strong><p>Comprador</p></strong>
+                    <p>Nome: {nomeFinal}</p>
+                    <p>CPF: {cpf}</p>
+                </div>
             </TextContainer>
-
-            <button>Voltar para Home</button>
+            <Link to={`/`}>
+                <button data-test="go-home-btn">Voltar para Home</button>
+            </Link>
         </PageContainer>
     )
 }

@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 
-export default function SessionsPage() {
+export default function SessionsPage({sessoes, setSessoes}) {
 
-    const [sessoes, setSessoes] = useState([]);
+    
     const [info, setInfo] = useState([]);
     const { idFilme } = useParams();
 
@@ -28,8 +28,6 @@ export default function SessionsPage() {
     return (
         <PageContainer>
             Selecione o horário
-
-
 
             <div>
                 {sessoes.map((s) => (

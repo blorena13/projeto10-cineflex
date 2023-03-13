@@ -14,47 +14,75 @@ export default function App() {
     const [dia, setDia] = useState([]);
     const [horario, setHorario] = useState([]);
     const [filme, setFilme] = useState([]);
+    const [sessoes, setSessoes] = useState([]);
+    const [assentos, setAssentos] = useState([]);
+    const [compra, setCompra] = useState([]);
 
-    const assentosIds = [];
-    
+    const assentosIds = (selected);
+
+    const ingresso = (compra) => {
+        if (selected.includes(compra)) {
+            setSelected(selected.filter((cadeiraId) =>  cadeiraId !== compra))
+        } else {
+            setSelected([...selected, compra]);
+        }
+    }
+
     return (
         <>
-        <BrowserRouter>
-           <NavContainer>CINEFLEX</NavContainer>
+            <BrowserRouter>
+                <NavContainer>CINEFLEX</NavContainer>
 
-            <Routes>
-           <Route path="/" element= { <HomePage  />} />  
-           <Route path="/sessoes/:idFilme" element={<SessionsPage  />} /> 
-           <Route path="/assentos/:idSessao" 
-           element={ 
-           <SeatsPage 
-           nomeFinal={nomeFinal} 
-           setNomeFinal={setNomeFinal}  
-           selected={selected} 
-           setSelected={setSelected}
-           cpf={cpf}
-           setCpft={setCpf}
-           dia={dia}
-           setDia={setDia}
-           horario={horario}
-           setHorario={setHorario}
-           filme={filme}
-           setFilme={setFilme}
-           assentosIds={assentosIds}
-             /> } /> 
+                <Routes>
+                    <Route path="/" element={<HomePage />} />
+                    <Route path="/sessoes/:idFilme" 
+                    element={
+                    <SessionsPage
+                    sessoes={sessoes}
+                    setSessoes={setSessoes}
+                     />} />
+                    <Route path="/assentos/:idSessao"
+                        element={
+                            <SeatsPage
+                                nomeFinal={nomeFinal}
+                                setNomeFinal={setNomeFinal}
+                                selected={selected}
+                                setSelected={setSelected}
+                                cpf={cpf}
+                                setCpft={setCpf}
+                                dia={dia}
+                                setDia={setDia}
+                                horario={horario}
+                                setHorario={setHorario}
+                                filme={filme}
+                                setFilme={setFilme}
+                                assentosIds={assentosIds}
+                                assentos={assentos}
+                                setAssentos={setAssentos}
+                                ingresso={ingresso}
+                                setCompra={setCompra}
+                            />} />
 
-            <Route path="/sucesso" 
-            element={
-            <SuccessPage 
-            selected={selected} 
-            setSelected={setSelected}
-            assentosIds={assentosIds}
-            filme={filme}
-           setFilme={setFilme}
-           horario={horario}
-           setHorario={setHorario}
-             /> }/>
-            </Routes>
+                    <Route path="/sucesso"
+                        element={
+                            <SuccessPage
+                                selected={selected}
+                                setSelected={setSelected}
+                                assentosIds={assentosIds}
+                                filme={filme}
+                                setFilme={setFilme}
+                                horario={horario}
+                                setHorario={setHorario}
+                                dia={dia}
+                                setDia={setDia}
+                                sessoes={sessoes}
+                                nomeFinal={nomeFinal}
+                                assentos={assentos}
+                                cpf={cpf}
+                                ingresso={ingresso}
+                                
+                            />} />
+                </Routes>
 
             </BrowserRouter>
         </>
